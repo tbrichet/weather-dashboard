@@ -25,7 +25,6 @@ var formSubmitHandler = function(event) {
         displayCityName(cityName, currentDay);
         nameInputEl.value="";
         getTodayData(cityName);
-        forecast();
     } else {
         alert("Apologies, the city name you have entered is not in our database.")
     }
@@ -37,52 +36,60 @@ var displayCityName = function(cityName, currentDay) {
     cityNameDisplayEl.innerHTML = "<h3>" + cityName + " (" + currentDay + ") " + "</h3>";
 };
 
-//Function to Fetch Today's Temperature, Humidity, and Wind Speed
+//Function to Fetch and Combine Today's and Forecasted Weather Data
 var getTodayData = function(cityName) {
-    //format the OpenWeather api url
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=f1da1483f8c358f7d202dc774184334a";
     
-    //make a request to the url
-    fetch(apiUrl).then(function(resp) {
-        return resp.json()
-    })
-        .then(function(data) {
-           displayTodayWeather(data);
-        })
-        .catch(function(error) {
-            alert("Unable to connect to OpenWeather App");
+    var apiRequestOne = fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=f1da1483f8c358f7d202dc774184334a")
+        .then(function(response) {
+            return response.json()
         });
+    
+    var apiRequestTwo = fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=f1da1483f8c358f7d202dc774184334a")
+        .then(function(response) {
+            return response.json()
+        });
+
+    var combinedData = {"apiRequestOne":{}, "apiRequestTwo":{}};
+    Promise.all([apiRequestOne,apiRequestTwo]).then(function(values) {
+        combinedData["apiRequestOne"] = values[0];
+        combinedData["apiRequestTwo"] = values[1];
+        console.log(combinedData["apiRequestOne"].main.temp);
+        var todayTemp = combinedData["apiRequestOne"].main.temp;
+        var todayHumid = combinedData["apiRequestOne"].main.humidity;
+        var todayWind = combinedData["apiRequestOne"].wind.speed;
+        displayTodayWeather(todayTemp, todayHumid, todayWind);
+        return combinedData;
+        
+    });
 };
 
 //Function to Display Today's Temperature, Humidity, and Wind Speed
-var displayTodayWeather =function(d) {
-    document.getElementById("temperature").innerHTML = "Temperature: " + d.main.temp + " F";
-    document.getElementById("humidity").innerHTML = "Humidity: " + d.main.humidity + " %";
-    document.getElementById("wind-speed").innerHTML = "Wind Speed: " + d.wind.speed + " MPH";
+var displayTodayWeather =function(todayTemp, todayHumid, todayWind) {
+    document.getElementById("temperature").innerHTML = "Temperature: " + todayTemp + " F";
+    document.getElementById("humidity").innerHTML = "Humidity: " + todayHumid + " %";
+    document.getElementById("wind-speed").innerHTML = "Wind Speed: " + todayWind + " MPH";
+    
     //document.getElementById("uv").innerHTML = 
+    //getForecastData(cityName);
 };
 
-//Function to Display Forecast Dates
-var forecast = function() {
+//Function to Display 5-Day Forecast
+var forecast = function(d) {
     //Day 1
-    var displayDayOne = document.getElementById('dayone');
-    displayDayOne.innerHTML = dayOne
+    document.getElementById('dayone').innerHTML = dayOne;
+    document.getElementById('temperature-one').innerHTML = "Temp: " + d.main.temp + " F";
 
     //Day 2
-    var displayDayTwo = document.getElementById('daytwo');
-    displayDayTwo.innerHTML = dayTwo
-
+    document.getElementById('daytwo').innerHTML = dayTwo;
+    
     //Day 3
-    var displayDayThree = document.getElementById('daythree');
-    displayDayThree.innerHTML = dayThree
+    document.getElementById('daythree').innerHTML = dayThree;
 
     //Day 4
-    var displayDayFour = document.getElementById('dayfour');
-    displayDayFour.innerHTML = dayFour
+    document.getElementById('dayfour').innerHTML = dayFour;
 
     //Day 5
-    var displayDayFive = document.getElementById('dayfive');
-    displayDayFive.innerHTML = dayFive
+    document.getElementById('dayfive').innerHTML = dayFive;
     
 };
 
