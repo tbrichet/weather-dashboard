@@ -37,7 +37,7 @@ var displayCityName = function(cityName, currentDay) {
     cityNameDisplayEl.innerHTML = "<h3>" + cityName + " (" + currentDay + ") " + "</h3>";
 };
 
-//Function to Fetch Today's Weather Data
+//Function to Fetch Today's Temperature, Humidity, and Wind Speed
 var getTodayData = function(cityName) {
     //format the OpenWeather api url
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=f1da1483f8c358f7d202dc774184334a";
@@ -54,7 +54,7 @@ var getTodayData = function(cityName) {
         });
 };
 
-//Function to Display Today's Weather
+//Function to Display Today's Temperature, Humidity, and Wind Speed
 var displayTodayWeather =function(d) {
     document.getElementById("temperature").innerHTML = "Temperature: " + d.main.temp + " F";
     document.getElementById("humidity").innerHTML = "Humidity: " + d.main.humidity + " %";
