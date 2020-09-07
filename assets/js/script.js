@@ -24,6 +24,7 @@ var formSubmitHandler = function(event) {
     if(cityName) {
         displayCityName(cityName, currentDay);
         nameInputEl.value="";
+        getTodayData(cityName);
         forecast();
     } else {
         alert("Apologies, the city name you have entered is not in our database.")
@@ -34,6 +35,31 @@ var formSubmitHandler = function(event) {
 var displayCityName = function(cityName, currentDay) {
     var cityNameDisplayEl = document.getElementById('city-name-display');
     cityNameDisplayEl.innerHTML = "<h3>" + cityName + " (" + currentDay + ") " + "</h3>";
+};
+
+//Function to Fetch Today's Weather Data
+var getTodayData = function(cityName) {
+    //format the OpenWeather api url
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=f1da1483f8c358f7d202dc774184334a";
+    
+    //make a request to the url
+    fetch(apiUrl).then(function(resp) {
+        return resp.json()
+    })
+        .then(function(data) {
+           displayTodayWeather(data);
+        })
+        .catch(function(error) {
+            alert("Unable to connect to OpenWeather App");
+        });
+};
+
+//Function to Display Today's Weather
+var displayTodayWeather =function(d) {
+    document.getElementById("temperature").innerHTML = "Temperature: " + d.main.temp + " F";
+    document.getElementById("humidity").innerHTML = "Humidity: " + d.main.humidity + " %";
+    document.getElementById("wind-speed").innerHTML = "Wind Speed: " + d.wind.speed + " MPH";
+    //document.getElementById("uv").innerHTML = 
 };
 
 //Function to Display Forecast Dates
@@ -58,7 +84,7 @@ var forecast = function() {
     var displayDayFive = document.getElementById('dayfive');
     displayDayFive.innerHTML = dayFive
     
-}
+};
 
 //Event Handler for Submit Button
 userFormEl.addEventListener("submit", formSubmitHandler);
