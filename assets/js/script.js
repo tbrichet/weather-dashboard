@@ -20,7 +20,7 @@ var formSubmitHandler = function(event) {
     // Variable for city name entered into form
     var cityName = nameInputEl.value.trim();
     
-    // Pass to Display Function or Alert if Not City Name
+    // Pass to City Name and Date Display Function, Reset Input, and Pass to Fetch Function
     if(cityName) {
         displayCityName(cityName, currentDay);
         nameInputEl.value="";
@@ -50,6 +50,7 @@ var getTodayData = function(cityName) {
             return response.json()
         });
 
+    //Combine API Requests | Code Adapted from Sophia Shoemaker "Using the Javascript Fetch API"
     var combinedData = {"apiRequestOne":{}, "apiRequestTwo":{}};
     Promise.all([apiRequestOne,apiRequestTwo]).then(function(values) {
         combinedData["apiRequestOne"] = values[0];
@@ -66,10 +67,30 @@ var getTodayData = function(cityName) {
         var dayOneHumid = combinedData["apiRequestTwo"].list[0].main.humidity;
         forecastDayOne(dayOneTemp, dayOneHumid);
 
+        //Forecast Day 2
+        var dayTwoTemp = combinedData["apiRequestTwo"].list[1].main.temp;
+        var dayTwoHumid = combinedData["apiRequestTwo"].list[1].main.humidity;
+        forecastDayTwo(dayTwoTemp, dayTwoHumid);
+
+        //Forecast Day 3
+        var dayThreeTemp = combinedData["apiRequestTwo"].list[2].main.temp;
+        var dayThreeHumid = combinedData["apiRequestTwo"].list[2].main.humidity;
+        forecastDayThree(dayThreeTemp, dayThreeHumid);
+
+        //Forecast Day 4
+        var dayFourTemp = combinedData["apiRequestTwo"].list[3].main.temp;
+        var dayFourHumid = combinedData["apiRequestTwo"].list[3].main.humidity;
+        forecastDayFour(dayFourTemp, dayFourHumid);
+
+        //Forecast Day 5
+        var dayFiveTemp = combinedData["apiRequestTwo"].list[4].main.temp;
+        var dayFiveHumid = combinedData["apiRequestTwo"].list[4].main.humidity;
+        forecastDayFive(dayFiveTemp, dayFiveHumid);
+        
+
         return combinedData;
         
     });
-    console.log(combinedData);
 };
 
 //Function to Display Today's Temperature, Humidity, and Wind Speed
@@ -82,25 +103,37 @@ var displayTodayWeather =function(todayTemp, todayHumid, todayWind) {
     //getForecastData(cityName);
 };
 
-//Function to Display 5-Day Forecast
+//Function to Display 5-Day Forecast | Day 1
 var forecastDayOne = function(dayOneTemp, dayOneHumid) {
-    //Day 1
     document.getElementById('dayone').innerHTML = dayOne;
     document.getElementById('temperature-one').innerHTML = "Temp: " + dayOneTemp + " F";
     document.getElementById('humidity-one').innerHTML = "Humidity: " + dayOneHumid + "%";
-
-    //Day 2
-    document.getElementById('daytwo').innerHTML = dayTwo;
-    
-    //Day 3
-    document.getElementById('daythree').innerHTML = dayThree;
-
-    //Day 4
-    document.getElementById('dayfour').innerHTML = dayFour;
-
-    //Day 5
-    document.getElementById('dayfive').innerHTML = dayFive;
 };
+//Function to Display 5-Day Forecast | Day 2
+var forecastDayTwo = function(dayTwoTemp, dayTwoHumid) {
+    document.getElementById('daytwo').innerHTML = dayTwo;
+    document.getElementById('temperature-two').innerHTML = "Temp: " + dayTwoTemp + " F";
+    document.getElementById('humidity-two').innerHTML = "Humidity: " + dayTwoHumid + "%";
+};
+//Function to Display 5-Day Forecast | Day 3
+var forecastDayThree = function(dayThreeTemp, dayThreeHumid) {
+    document.getElementById('daythree').innerHTML = dayThree;
+    document.getElementById('temperature-three').innerHTML = "Temp: " + dayThreeTemp + " F";
+    document.getElementById('humidity-three').innerHTML = "Humidity: " + dayThreeHumid + "%";
+};
+//Function to Display 5-Day Forecast | Day 4
+var forecastDayFour = function(dayFourTemp, dayFourHumid) {
+    document.getElementById('dayfour').innerHTML = dayFour;
+    document.getElementById('temperature-four').innerHTML = "Temp: " + dayFourTemp + " F";
+    document.getElementById('humidity-four').innerHTML = "Humidity: " + dayFourHumid + "%";
+};
+//Function to Display 5-Day Forecast | Day 4
+var forecastDayFive = function(dayFiveTemp, dayFiveHumid) {
+    document.getElementById('dayfive').innerHTML = dayFive;
+    document.getElementById('temperature-five').innerHTML = "Temp: " + dayFiveTemp + " F";
+    document.getElementById('humidity-five').innerHTML = "Humidity: " + dayFiveHumid + "%";
+};
+
 
 //Event Handler for Submit Button
 userFormEl.addEventListener("submit", formSubmitHandler);
