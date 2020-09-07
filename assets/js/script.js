@@ -25,6 +25,7 @@ var formSubmitHandler = function(event) {
         displayCityName(cityName, currentDay);
         nameInputEl.value="";
         getTodayData(cityName);
+        document.getElementById('past-search').innerHTML = cityName;
     } else {
         alert("Apologies, the city name you have entered is not in our database.")
     }
@@ -44,7 +45,7 @@ var getTodayData = function(cityName) {
             return response.json()
         });
     
-    var apiRequestTwo = fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=f1da1483f8c358f7d202dc774184334a")
+    var apiRequestTwo = fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=imperial&appid=f1da1483f8c358f7d202dc774184334a")
         .then(function(response) {
             return response.json()
         });
@@ -53,14 +54,22 @@ var getTodayData = function(cityName) {
     Promise.all([apiRequestOne,apiRequestTwo]).then(function(values) {
         combinedData["apiRequestOne"] = values[0];
         combinedData["apiRequestTwo"] = values[1];
-        console.log(combinedData["apiRequestOne"].main.temp);
+
+        //Today's Weather Data
         var todayTemp = combinedData["apiRequestOne"].main.temp;
         var todayHumid = combinedData["apiRequestOne"].main.humidity;
         var todayWind = combinedData["apiRequestOne"].wind.speed;
         displayTodayWeather(todayTemp, todayHumid, todayWind);
+
+        //Forecast Day 1
+        var dayOneTemp = combinedData["apiRequestTwo"].list[0].main.temp;
+        var dayOneHumid = combinedData["apiRequestTwo"].list[0].main.humidity;
+        forecastDayOne(dayOneTemp, dayOneHumid);
+
         return combinedData;
         
     });
+    console.log(combinedData);
 };
 
 //Function to Display Today's Temperature, Humidity, and Wind Speed
@@ -74,10 +83,11 @@ var displayTodayWeather =function(todayTemp, todayHumid, todayWind) {
 };
 
 //Function to Display 5-Day Forecast
-var forecast = function(d) {
+var forecastDayOne = function(dayOneTemp, dayOneHumid) {
     //Day 1
     document.getElementById('dayone').innerHTML = dayOne;
-    document.getElementById('temperature-one').innerHTML = "Temp: " + d.main.temp + " F";
+    document.getElementById('temperature-one').innerHTML = "Temp: " + dayOneTemp + " F";
+    document.getElementById('humidity-one').innerHTML = "Humidity: " + dayOneHumid + "%";
 
     //Day 2
     document.getElementById('daytwo').innerHTML = dayTwo;
@@ -90,7 +100,6 @@ var forecast = function(d) {
 
     //Day 5
     document.getElementById('dayfive').innerHTML = dayFive;
-    
 };
 
 //Event Handler for Submit Button
