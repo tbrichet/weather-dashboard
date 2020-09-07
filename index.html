@@ -15,12 +15,12 @@
 
     <!-- Side navigation -->
     <div class="sidenav">
-        <h5 class="search">Search for a City:</h5>
         <div>
-            <!-- The form -->
-            <form class="example" action="action_page.php" style="margin-left:10px; max-width:200px">
-                <input type="text" name="search">
-                <button type="submit"><i class="fa fa-search"></i></button>
+            <!--City Name Submit Form-->
+            <form id="form" class="example" style="margin-left:10px; max-width:200px">
+                <label for="name-input">Search for a City:</label>
+                <input type="text" id="name-input" name="name-input"/>
+                <button type="submit"xs><i class="fa fa-search"></i></button>
             </form>
         </div>
         <a href="#">About</a>
@@ -34,8 +34,7 @@
         <!--Summary-->
         <div class="summary">
             <!--City Name and Date-->
-            <div>
-            <h3>Atlanta</h3>
+            <div id="city-name-display">
             </div>
             <!--Temp, Humidity, Wind Speed, UV Index-->
             <div>
@@ -45,10 +44,36 @@
         <div>
             <h4>5-Day Forecast:</h4>
         </div>
+        <!--Cards-->
+        <div class="container">
+            <div class="row justify-content-between">
+                <!--Day 1-->
+                <div class="col-2 card blue">
+                    Day 1
+                </div>
+                <!--Day 2-->
+                <div class="col-2 card blue">
+                    Day 2
+                </div>
+                <!--Day 3-->
+                <div class="col-2 card blue">
+                    Day 3
+                </div>
+                <!--Day 4-->
+                <div class="col-2 card blue">
+                    Day 4
+                </div>
+                <!--Day 5-->
+                <div class="col-2 card blue">
+                    Day 5
+                </div>
+            </div>
+        </div>
     
     </div>
 
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>

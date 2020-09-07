@@ -33,12 +33,6 @@
   .sidenav a:hover {
     color: #f1f1f1;
   }
-
-  /*Search H3 */
-  .search {
-      font-size: 16px;
-      margin-left: 10px;
-  }
   
   /* Style the search field */
   form.example input[type=text] {
@@ -85,6 +79,15 @@
       margin: 10px;
       padding: 20px 10px 20px 10px;
       border: 1px solid ghostwhite;
+  }
+
+  h4 {
+     margin: 10px; 
+  }
+
+  .blue {
+      background-color: dodgerblue;
+      color: white;
   }
   
   /* Reformat for Screen Sizes */
